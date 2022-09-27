@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 12:29:57 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/09/22 14:38:17 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/09/27 12:26:41 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int main()
 
 	i = 0;
 	while (i++ <= 2)
-		printf("%s", get_next_line(fd));
+		printf("Line %i is: \"%s\"\n",i, get_next_line(fd));
 	return (0);
 	//char str[15] = "Holaquetal";
 

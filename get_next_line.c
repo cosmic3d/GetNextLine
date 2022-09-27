@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:48:46 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/09/22 14:37:19 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/09/27 14:34:54 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ char	*read_line(t_shit *things)
 	len = ft_strlen(things->buffer);
 	while(things->buffer[i + j] != '\n' && things->buffer[i + j] != '\0')
 	{
+		//if ()
 		if (things->buffer[i + j + 1] == '\0')
 			return (ft_substr(things->buffer, previndex, i + j + 1));
 		i++;
