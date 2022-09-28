@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:48:46 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/09/27 14:34:54 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/09/28 15:42:50 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,28 @@ char	*read_line(t_shit *things)
 	int j;
 	int len;
 	int previndex;
-
+	//char *line;
 	i = 0;
 	j = things->index;
 	previndex = j;
 	len = ft_strlen(things->buffer);
-	while(things->buffer[i + j] != '\n' && things->buffer[i + j] != '\0')
+	while(things->buffer[i + j] != '\0' && things->buffer[i + j] != '\n')
 	{
-		//if ()
+		if (things->buffer[i + j + 1] == '\n')
+		{
+			things->index = i + j + 2;
+			//printf("IM gonna return: %s", ft_substr(things->buffer, previndex, things->index));
+			return(ft_substr(things->buffer, previndex, things->index));
+		}
 		if (things->buffer[i + j + 1] == '\0')
-			return (ft_substr(things->buffer, previndex, i + j + 1));
+		{
+			things->joinlater = ft_substr(things->buffer, previndex, i + j + 1);
+			things->index = ft_strlen(things->joinlater);
+			//printf("\njoinlater is: %s", things->joinlater);
+			//things->buffer = NULL;
+			return (NULL);
+		}
 		i++;
-	}
-	if (things->buffer[i + j + 1] == '\n')
-	{
-		things->index = i + j + 2;
-		return(ft_substr(things->buffer, previndex, things->index));
 	}
 	return (NULL);
 }
@@ -57,20 +63,29 @@ char	*get_next_line(int fd)
 	else if(things.buffer != NULL)
 	{
 		line = read_line(&things);
-		if (!line)
+		if (line)
 		{
-			if (things.buffer)
-				free(things.buffer);
-			return (NULL);
+			write(1, "Entra\n", 6);
+			return(line);
 		}
-		return(line);
+		//else
+			//free(things.buffer);
 	}
 	bytes = read(fd, things.buffer, BUFFER_SIZE);
 	if (bytes == -1)
+	{
+		write(1, "Entra\n", 6);
 		return(NULL);
+	}
 	if (things.buffer[bytes - 1] != '\0')
 		things.buffer[bytes] = '\0';
-	
+	if (things.joinlater)
+	{
+		things.buffer = ft_strjoin(things.joinlater, things.buffer);
+		things.index -= ft_strlen(things.joinlater);
+		free(things.joinlater);
+	}
+	printf("bUFFER IS: %s\n", things.buffer);
 	line = read_line(&things);
 	if (!line)
 	{
