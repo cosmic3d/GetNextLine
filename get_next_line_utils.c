@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 15:48:49 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/09/22 14:12:32 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/09/30 22:51:38 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,15 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	}
 	new[i] = '\0';
 	return (new);
+}
+
+char	*ft_strrchr(const char *s, int c, int index)
+{
+	while (s[index] != '\0')
+	{
+		if (s[index] == (char)c)
+			return ((char *)(s + index));
+		index++;
+	}
+	return (NULL);
 }
