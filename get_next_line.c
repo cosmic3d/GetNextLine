@@ -6,46 +6,69 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:48:46 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/09/28 15:42:50 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/09/30 13:03:30 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-// int find_n(t_shit *things)
-// {
-	
-// }
+int	read_buffer(t_shit *things, int fd)
+{
+	ssize_t bytes;
+
+	bytes = read(fd, things->buffer, BUFFER_SIZE);
+	if (bytes <= 0)
+	{
+		write(1, "An error ocurred or theres nothing else to read\n", 49);
+		return(-1);
+	}
+	things->buffer[bytes] = '\0';
+}
+
+int whatdoido(t_shit *things, int i , int j)
+{
+	/*
+	If it finds a \n
+		If there is a \0 next to the \n
+			We set the index to i + j + 1 and return previndex to index
+		If there is something different to a \0 next to the \n
+			We set the index to i + j + 1, save everything from index to ft_strlen(buffer) and return previndex to index
+	If it finds a \0 there are two possibilities:
+		1 - The buffer size was greater or equal than the size of the file, so we just have to return that line and end the program
+		2 - The buffer size was lower than the size of the file, so we have to keep joining strings till we find a \n
+	*/
+	if (things->buffer[i + j] == '\n')
+	{
+		if (things->buffer[i + j + 1] == '\0')
+			return (0);
+		return (1);
+	}
+	return (2);
+}
 
 char	*read_line(t_shit *things)
 {
 	int i;
 	int j;
-	int len;
 	int previndex;
+	int	what;
 	//char *line;
 	i = 0;
 	j = things->index;
 	previndex = j;
-	len = ft_strlen(things->buffer);
 	while(things->buffer[i + j] != '\0' && things->buffer[i + j] != '\n')
-	{
-		if (things->buffer[i + j + 1] == '\n')
-		{
-			things->index = i + j + 2;
-			//printf("IM gonna return: %s", ft_substr(things->buffer, previndex, things->index));
-			return(ft_substr(things->buffer, previndex, things->index));
-		}
-		if (things->buffer[i + j + 1] == '\0')
-		{
-			things->joinlater = ft_substr(things->buffer, previndex, i + j + 1);
-			things->index = ft_strlen(things->joinlater);
-			//printf("\njoinlater is: %s", things->joinlater);
-			//things->buffer = NULL;
-			return (NULL);
-		}
 		i++;
+	what = whatdoido(things, i, j);
+	if (what < 2)
+	{
+		things->index = i + j + 1;
+		if (what == 1)
+			things->joinlater = ft_substr(things->buffer, things->index, ft_strlen(things->buffer));
+		return (ft_substr(things->buffer, previndex, things->index));
 	}
+	things->index = i + j;
+	things->joinlater = ft_substr(things->buffer, previndex, i + j + 1);
+	things->buffer = NULL;
 	return (NULL);
 }
 
@@ -62,29 +85,18 @@ char	*get_next_line(int fd)
 	}
 	else if(things.buffer != NULL)
 	{
-		line = read_line(&things);
-		if (line)
-		{
-			write(1, "Entra\n", 6);
-			return(line);
-		}
-		//else
-			//free(things.buffer);
+		while (line == NULL)
+			line = read_line(&things);
+		return(line);
 	}
-	bytes = read(fd, things.buffer, BUFFER_SIZE);
-	if (bytes == -1)
-	{
-		write(1, "Entra\n", 6);
-		return(NULL);
-	}
-	if (things.buffer[bytes - 1] != '\0')
-		things.buffer[bytes] = '\0';
-	if (things.joinlater)
-	{
-		things.buffer = ft_strjoin(things.joinlater, things.buffer);
-		things.index -= ft_strlen(things.joinlater);
-		free(things.joinlater);
-	}
+	if (read_buffer(&things, fd) == -1)
+		return (NULL);
+	// if (things.joinlater)
+	// {
+	// 	things.buffer = ft_strjoin(things.joinlater, things.buffer);
+	// 	things.index -= ft_strlen(things.joinlater);
+	// 	free(things.joinlater);
+	// }
 	printf("bUFFER IS: %s\n", things.buffer);
 	line = read_line(&things);
 	if (!line)
