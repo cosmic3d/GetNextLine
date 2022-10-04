@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:49:16 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/09/30 22:51:22 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/04 14:39:49 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,22 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <unistd.h>
+# include <errno.h>
 
 char	*get_next_line(int fd);
 char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_strlen(const char *str);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strrchr(const char *s, int c, int index);
+char	*ft_strdup(const char *s1);
 
 typedef struct s_shit
 {
 	int		index;
 	char	*buffer;
+	char	*prevbuffer;
 	char	*joinlater;
 	char	*line;
-	int		readagain;
+	int		bytes;
 }	t_shit;
 #endif

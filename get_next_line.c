@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:48:46 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/09/30 23:25:43 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/04 14:46:05 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,45 @@
 
 int	read_buffer(t_shit *things, int fd)
 {
-	int bytes;
-
-	bytes = read(fd, things->buffer, BUFFER_SIZE);
-	if (bytes <= 0)
+	things->bytes = read(fd, things->buffer, BUFFER_SIZE);
+	if (things->bytes < 0)
 	{
-		printf("\nBytes read: %i", bytes);
+		printf("\nBytes read: %i", things->bytes);
 		printf("\nBuffer is: %s\n", things->buffer);
-		write(1, "An error ocurred or theres nothing else to read\n", 49);
+		write(1, "An error ocurred\n", 20);
 		return(-1);
 	}
-	things->buffer[bytes] = '\0';
+	//printf("INDEX before assigning \'\\0\' is %i\n", things->index);
+	//printf("BYTES before assigning \'\\0\' is %i\n", things->bytes);
+	things->buffer[things->bytes] = '\0';
 	return (0);
 }
 
 char	*allocate(t_shit *things, int fd)
 {
-	free(things->buffer);
+	char	*tmp;
+
 	things->buffer = NULL;
+	free(things->buffer);
 	things->buffer = (char *)malloc((ssize_t)BUFFER_SIZE + 1);
 	if (read_buffer(things, fd) == -1)
 		return (NULL);
 	things->index = 0;
+	printf("\nJoinlater is: %s\n", things->joinlater);
 	if (things->joinlater)
+	{
 		things->buffer = ft_strjoin(things->joinlater, things->buffer);
-	printf("\nBuffer is uwu: %s\n", things->buffer);
+		free(things->joinlater);
+	}
+	while (!ft_strrchr(things->buffer, '\n', 0) && things->bytes != 0)
+	{
+		tmp = ft_strdup(things->buffer);
+		if (read_buffer(things, fd) == -1)
+			return (NULL);
+		things->buffer = ft_strjoin(tmp, things->buffer);
+		free(tmp);
+	}
+	printf("\nBuffer after joinlater is: %s\n", things->buffer);
 	return("1");
 }
 int whatdoido(t_shit *things, int i , int j)
@@ -73,6 +87,7 @@ char	*read_line(t_shit *things)
 	j = things->index;
 	previndex = j;
 	printf("Index is: %i\n", j);
+	printf("Index character is: %c\n", things->buffer[j]);
 	printf("Buffer is: %s\n", things->buffer);
 	while(things->buffer[i + j] != '\0' && things->buffer[i + j] != '\n')
 		i++;
@@ -84,14 +99,14 @@ char	*read_line(t_shit *things)
 			things->joinlater = ft_substr(things->buffer, things->index, ft_strlen(things->buffer));
 		printf("Join later now is: %s\n", things->joinlater);
 		if (things->joinlater)
-			return (ft_substr(things->buffer, previndex, things->index - ft_strlen(things->joinlater)));
+			return (ft_substr(things->buffer, previndex, things->index));
 		return (ft_substr(things->buffer, previndex, things->index));
 	}
 	things->index = i + j;
 	if (things->joinlater == NULL)
 		things->joinlater = ft_substr(things->buffer, previndex, i + j + 1);
-	printf("Join later is: %s\n", things->joinlater);
-	things->buffer = NULL;
+	printf("Join later is now: %s\n", things->joinlater);
+	//things->buffer = NULL;
 	//free(things->buffer);
 	return (NULL);
 }
@@ -100,34 +115,35 @@ char	*get_next_line(int fd)
 {
 	static t_shit	things;
 	
+	things.line = NULL;
 	if (things.buffer == NULL)
 	{
 		if (allocate(&things, fd) == NULL)
 			return (NULL);
 	}
-	things.line = read_line(&things);
-	if (things.line != NULL)
-		return (things.line);
+	else if (things.buffer[things.index] == '\0')
+	{
+		if (allocate(&things, fd) == NULL)
+			return (NULL);
+	}
+	//things.line = read_line(&things);
+	//if (things.line != NULL)
+		//return (things.line);
 	while (things.line == NULL)
 	{
-		//write(1, "Entrooo", 7);
-		if (things.joinlater == NULL)
-			things.line = read_line(&things);
-		//write(1, "Entrooo", 7);
+		things.line = read_line(&things);
 		if (things.joinlater != NULL)
 		{
 			//printf("\nEntro aqui cojones\n");
-			printf("Buffer is: %s\n", things.buffer);
-			if (things.buffer == NULL)
+			//printf("Buffer is: %s\n", things.buffer);
+			if (things.buffer[things.index] == '\0')
 			{
-				free(things.buffer);
-				//things.buffer = NULL;
 				if (allocate(&things, fd) == NULL)
 					return (NULL);
 			}
-			else
-				things.line = read_line(&things);
 		}
+		if (things.bytes == 0)
+			return (things.buffer);
 	}
 	return (things.line);
 }
