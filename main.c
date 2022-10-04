@@ -41,7 +41,7 @@ int main()
 
 	i = 0;
 	while (i++ <= 4)
-		printf("Line %i is: %s",i, get_next_line(fd));
+		printf("LINE %i IS: %s",i, get_next_line(fd));
 	return (0);
 	//char str[15] = "Holaquetal";
 

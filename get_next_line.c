@@ -49,6 +49,8 @@ char	*allocate(t_shit *things, int fd)
 		tmp = ft_strdup(things->buffer);
 		if (read_buffer(things, fd) == -1)
 			return (NULL);
+		printf("Tmp is: %s\n", tmp);
+		printf("Buffer is: %s\n", things->buffer);
 		things->buffer = ft_strjoin(tmp, things->buffer);
 		free(tmp);
 	}
@@ -131,6 +133,7 @@ char	*get_next_line(int fd)
 		//return (things.line);
 	while (things.line == NULL)
 	{
+		if (things.bytes == 0)                                                     	return (things.buffer);
 		things.line = read_line(&things);
 		if (things.joinlater != NULL)
 		{
@@ -142,8 +145,6 @@ char	*get_next_line(int fd)
 					return (NULL);
 			}
 		}
-		if (things.bytes == 0)
-			return (things.buffer);
 	}
 	return (things.line);
 }
