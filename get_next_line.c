@@ -30,6 +30,8 @@ int	read_buffer(t_shit *things, int fd)
 
 char	*allocate(t_shit *things, int fd)
 {
+	free(things->buffer);
+	things->buffer = NULL;
 	things->buffer = (char *)malloc((ssize_t)BUFFER_SIZE + 1);
 	if (read_buffer(things, fd) == -1)
 		return (NULL);

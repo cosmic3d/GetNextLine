@@ -40,7 +40,7 @@ int main()
 	int i;
 
 	i = 0;
-	while (i++ <= 2)
+	while (i++ <= 3)
 		printf("Line %i is: %s",i, get_next_line(fd));
 	return (0);
 	//char str[15] = "Holaquetal";
