@@ -42,8 +42,10 @@ char	*allocate(t_shit *things, int fd)
 	if (things->joinlater)
 	{
 		things->buffer = ft_strjoin(things->joinlater, things->buffer);
+		printf("Buffer after joinlater: %s", things->buffer);
 		free(things->joinlater);
-	}
+		things->joinlater = NULL;
+		}
 	while (!ft_strrchr(things->buffer, '\n', 0) && things->bytes != 0)
 	{
 		tmp = ft_strdup(things->buffer);
