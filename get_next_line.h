@@ -6,14 +6,14 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:49:16 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/06 14:38:56 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/06 20:34:47 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 42
 # endif
 # include <limits.h>
 # include <stdlib.h>
@@ -33,10 +33,11 @@ typedef struct s_shit
 {
 	int		index;
 	char	*buffer;
-	char	*prevbuffer;
 	char	*joinlater;
 	char	*line;
 	char	*tmp;
 	int		bytes;
 }	t_shit;
+
+char	*freethings(t_shit *things, int buffer, int joinlater, int line, int s);
 #endif

@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 15:48:49 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/04 14:39:40 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/06 20:41:57 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	i = 0;
 	j = 0;
-	new = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	new = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!new)
 		return (0);
 	while (s1[i] != '\0')
@@ -87,22 +87,24 @@ char	*ft_strrchr(const char *s, int c, int index)
 	return (NULL);
 }
 
-char	*ft_strdup(const char *s1)
+char	*freethings(t_shit *things, int buffer, int joinlater, int line, int s)
 {
-	char	*copy;
-	int		i;
-
-	i = ft_strlen(s1);
-	copy = malloc(sizeof(char) * (ft_strlen(s1) + 1));
-	if (copy == 0)
+	if (buffer == 1 && things->buffer)
 	{
-		errno = ENOMEM;
-		return (NULL);
+		free(things->buffer);
+		things->buffer = NULL;
 	}
-	while (i >= 0)
+	if (joinlater == 1 && things->joinlater)
 	{
-		copy[i] = s1[i];
-		i--;
+		free(things->joinlater);
+		things->joinlater = NULL;
 	}
-	return (copy);
+	if (line == 1 && things->line)
+	{
+		free(things->line);
+		things->line = NULL;
+	}
+	if (s == 1 && things)
+		things = NULL;
+	return (NULL);
 }

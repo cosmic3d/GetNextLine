@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:48:46 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/06 14:42:16 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/06 20:45:36 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	whatdoido(t_shit *things, int i , int j, int what)
 		copy[ii] = things->buffer[ii];
 		ii--;
 	}
-	things->buffer = copy;
+	things->tmp = copy;
 	return (0);
 }
 
@@ -93,9 +93,6 @@ char	*read_line(t_shit *things)
 	i = 0;
 	j = things->index;
 	previndex = j;
-	// printf("Index is: %i\n", j);
-	// printf("Index character is: %c\n", things->buffer[j]);
-	// printf("Buffer is: %s\n", things->buffer);
 	while(things->buffer[i + j] != '\0' && things->buffer[i + j] != '\n')
 		i++;
 	if (whatdoido(things, i, j, 0) != 2)
@@ -104,7 +101,7 @@ char	*read_line(t_shit *things)
 		if (whatdoido(things, i, j, 0) == 1 && !ft_strrchr(things->buffer, '\n', things->index))
 			things->joinlater = ft_substr(things->buffer, things->index, ft_strlen(things->buffer));
 		if (things->joinlater)
-			return (ft_substr(things->buffer, previndex, things->index));
+			return (ft_substr(things->buffer, previndex, things->index - previndex));
 		return (ft_substr(things->buffer, previndex, things->index - previndex));
 	}
 	things->index = i + j;
@@ -117,13 +114,13 @@ char	*get_next_line(int fd)
 {
 	static t_shit	things;
 	
-	things.line = NULL;
+	freethings(&things, 0, 0, 1, 0);
 	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
-		return (NULL);
+		return (freethings(&things, 1, 1, 1, 1));
 	if (things.buffer == NULL)
 	{
 		if (allocate(&things, fd) == NULL)
-			return (NULL);
+			return (freethings(&things, 1, 1, 1, 1));
 	}
 	else if (things.buffer[things.index] == '\0')
 		if (allocate(&things, fd) == NULL)
@@ -131,7 +128,11 @@ char	*get_next_line(int fd)
 	while (things.line == NULL)
 	{
 		if (things.bytes == 0)
-			return (things.buffer);
+		{
+			if (*things.buffer != '\0')
+				return (things.buffer);
+			return (NULL);
+		}
 		things.line = read_line(&things);
 		if (things.joinlater != NULL)
 			if (things.buffer[things.index] == '\0' && !allocate(&things, fd))
