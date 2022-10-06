@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:49:16 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/04 14:39:49 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/06 14:38:56 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1
 # endif
+# include <limits.h>
 # include <stdlib.h>
 # include <fcntl.h>
 # include <stdio.h>
@@ -35,6 +36,7 @@ typedef struct s_shit
 	char	*prevbuffer;
 	char	*joinlater;
 	char	*line;
+	char	*tmp;
 	int		bytes;
 }	t_shit;
 #endif
