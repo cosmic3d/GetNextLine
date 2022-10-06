@@ -102,9 +102,18 @@ char	*read_line(t_shit *things)
 		if (what == 1 && !ft_strrchr(things->buffer, '\n', things->index))
 			things->joinlater = ft_substr(things->buffer, things->index, ft_strlen(things->buffer));
 		printf("Join later now is: %s\n", things->joinlater);
-		if (things->joinlater)
+		if (things->joinlater){
+			printf("Join later exists\n");
+			printf("previndex is: %i\n", previndex);
+			printf("index is: %i\n", things->index);
 			return (ft_substr(things->buffer, previndex, things->index));
-		return (ft_substr(things->buffer, previndex, things->index));
+		}
+		printf("previndex is: %i\n", previndex);
+		printf("index is: %i\n", things->index);
+		printf("Join later does not exists\n");
+		printf("Buffer is actualmente: %s\n", things->buffer);
+		printf("Substr gives: %s\n", ft_substr(things->buffer, previndex, things->index - previndex));
+		return (ft_substr(things->buffer, previndex, things->index - previndex));
 	}
 	things->index = i + j;
 	if (things->joinlater == NULL)

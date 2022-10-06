@@ -19,7 +19,7 @@ int main()
 	// // char *line;
 
 
-	fd = open("texto", O_RDONLY);
+	fd = open("texto2", O_RDONLY);
 	if (!fd)
 	{
 		printf("The file could not be opened\nFinishing program\n");
@@ -40,7 +40,7 @@ int main()
 	int i;
 
 	i = 0;
-	while (i++ <= 4)
+	while (i++ <= 8)
 		printf("LINE %i IS: %s",i, get_next_line(fd));
 	return (0);
 	//char str[15] = "Holaquetal";
