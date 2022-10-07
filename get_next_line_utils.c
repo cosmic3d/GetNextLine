@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 15:48:49 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/06 20:41:57 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/07 14:00:28 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,11 @@ char	*ft_strrchr(const char *s, int c, int index)
 
 char	*freethings(t_shit *things, int buffer, int joinlater, int line, int s)
 {
+	//things->index = 0;
 	if (buffer == 1 && things->buffer)
 	{
 		free(things->buffer);
+		things->index = 0;
 		things->buffer = NULL;
 	}
 	if (joinlater == 1 && things->joinlater)

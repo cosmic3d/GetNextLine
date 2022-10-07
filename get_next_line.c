@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:48:46 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/06 20:45:36 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/07 14:27:30 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ int	whatdoido(t_shit *things, int i , int j, int what)
 	}
 	ii = ft_strlen(things->buffer);
 	copy = malloc(sizeof(char) * (ft_strlen(things->buffer) + 1));
-	if (copy == 0)
-		return (0);
+	if (copy == NULL)
+		return (-1);
 	while (ii >= 0)
 	{
 		copy[ii] = things->buffer[ii];
@@ -61,7 +61,7 @@ int	whatdoido(t_shit *things, int i , int j, int what)
 
 char	*allocate(t_shit *things, int fd)
 {
-	things->buffer = NULL;
+	//things->buffer = NULL;
 	free(things->buffer);
 	things->buffer = (char *)malloc((ssize_t)BUFFER_SIZE + 1);
 	if (read_buffer(things, fd) == -1)
@@ -70,16 +70,16 @@ char	*allocate(t_shit *things, int fd)
 	if (things->joinlater)
 	{
 		things->buffer = ft_strjoin(things->joinlater, things->buffer);
-		free(things->joinlater);
+		//free(things->joinlater);
 		things->joinlater = NULL;
 	}
 	while (!ft_strrchr(things->buffer, '\n', 0) && things->bytes != 0)
 	{
-		whatdoido(things, 0, 0, 1);
-		if (read_buffer(things, fd) == -1)
+		if (whatdoido(things, 0, 0, 1) == -1 || read_buffer(things, fd) == -1)
 			return (NULL);
 		things->buffer = ft_strjoin(things->tmp, things->buffer);
-		free(things->tmp);
+		if (things->tmp)
+			free(things->tmp);
 	}
 	return("1");
 }
@@ -89,13 +89,12 @@ char	*read_line(t_shit *things)
 	int i;
 	int j;
 	int previndex;
-	//char *line;
 	i = 0;
 	j = things->index;
 	previndex = j;
-	while(things->buffer[i + j] != '\0' && things->buffer[i + j] != '\n')
+	while(things->buffer[i + j] != '\0' && things->buffer[i + j] != '\n')//Buscamos salto de línea o \0
 		i++;
-	if (whatdoido(things, i, j, 0) != 2)
+	if (whatdoido(things, i, j, 0) != 2)//Si da distinto de dos, hay un salto de línea
 	{
 		things->index = i + j + 1;
 		if (whatdoido(things, i, j, 0) == 1 && !ft_strrchr(things->buffer, '\n', things->index))
@@ -117,6 +116,7 @@ char	*get_next_line(int fd)
 	freethings(&things, 0, 0, 1, 0);
 	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
 		return (freethings(&things, 1, 1, 1, 1));
+	printf("Index is: %i\n", things.index);
 	if (things.buffer == NULL)
 	{
 		if (allocate(&things, fd) == NULL)
@@ -124,19 +124,19 @@ char	*get_next_line(int fd)
 	}
 	else if (things.buffer[things.index] == '\0')
 		if (allocate(&things, fd) == NULL)
-			return (NULL);
+			return (freethings(&things, 1, 1, 1, 1));
 	while (things.line == NULL)
 	{
 		if (things.bytes == 0)
 		{
 			if (*things.buffer != '\0')
 				return (things.buffer);
-			return (NULL);
+			return (freethings(&things, 1, 1, 1, 1));
 		}
 		things.line = read_line(&things);
 		if (things.joinlater != NULL)
 			if (things.buffer[things.index] == '\0' && !allocate(&things, fd))
-				return (NULL);
+				return (freethings(&things, 1, 1, 1, 1));
 	}
 	return (things.line);
 }
