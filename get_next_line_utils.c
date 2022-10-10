@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 15:48:49 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/07 14:00:28 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/10 14:25:00 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	j = 0;
 	new = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!new)
-		return (0);
+		return (NULL);
 	while (s1[i] != '\0')
 	{
 		new[i] = s1[i];

@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:48:46 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/07 14:27:30 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/10 14:34:56 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	read_buffer(t_shit *things, int fd)
 	things->bytes = read(fd, things->buffer, BUFFER_SIZE);
 	if (things->bytes < 0)
 		return(-1);
+	//printf("Bytes read are: %i\n", things->bytes);
 	things->buffer[things->bytes] = '\0';
 	return (0);
 }
@@ -61,9 +62,11 @@ int	whatdoido(t_shit *things, int i , int j, int what)
 
 char	*allocate(t_shit *things, int fd)
 {
-	//things->buffer = NULL;
-	free(things->buffer);
+	things->buffer = NULL;
+	//free(things->buffer);
 	things->buffer = (char *)malloc((ssize_t)BUFFER_SIZE + 1);
+	if (things->buffer == NULL)
+		return(NULL);
 	if (read_buffer(things, fd) == -1)
 		return (NULL);
 	things->index = 0;
@@ -80,6 +83,8 @@ char	*allocate(t_shit *things, int fd)
 		things->buffer = ft_strjoin(things->tmp, things->buffer);
 		if (things->tmp)
 			free(things->tmp);
+		if (!things->buffer)
+			return (freethings(things, 1, 1, 1, 1));
 	}
 	return("1");
 }
@@ -114,9 +119,10 @@ char	*get_next_line(int fd)
 	static t_shit	things;
 	
 	freethings(&things, 0, 0, 1, 0);
+	//things.line = NULL;
 	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
 		return (freethings(&things, 1, 1, 1, 1));
-	printf("Index is: %i\n", things.index);
+	//printf("Index is: %i\n", things.index);
 	if (things.buffer == NULL)
 	{
 		if (allocate(&things, fd) == NULL)
@@ -129,9 +135,12 @@ char	*get_next_line(int fd)
 	{
 		if (things.bytes == 0)
 		{
-			if (*things.buffer != '\0')
-				return (things.buffer);
-			return (freethings(&things, 1, 1, 1, 1));
+			if (!(things.buffer[things.index] != '\0'))
+				return (freethings(&things, 1, 1, 1, 1));
+			whatdoido(&things, 0, 0, 1);
+			things.line = things.tmp;
+			things.buffer = NULL;
+			return (things.line);
 		}
 		things.line = read_line(&things);
 		if (things.joinlater != NULL)
