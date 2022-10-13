@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 15:48:49 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/10 14:25:00 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/13 16:57:20 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,24 +89,28 @@ char	*ft_strrchr(const char *s, int c, int index)
 
 char	*freethings(t_shit *things, int buffer, int joinlater, int line, int s)
 {
-	//things->index = 0;
 	if (buffer == 1 && things->buffer)
 	{
 		free(things->buffer);
-		things->index = 0;
 		things->buffer = NULL;
+		printf("\nBuffer freed\n");
 	}
 	if (joinlater == 1 && things->joinlater)
 	{
-		free(things->joinlater);
+		//free(things->joinlater);
 		things->joinlater = NULL;
+		printf("Joinlater freed\n");
 	}
 	if (line == 1 && things->line)
 	{
-		free(things->line);
+		//free(things->line);
 		things->line = NULL;
+		printf("Line freed\n");
 	}
 	if (s == 1 && things)
+	{
 		things = NULL;
+		printf("Struct null\n");
+	}
 	return (NULL);
 }

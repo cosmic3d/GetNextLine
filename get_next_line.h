@@ -6,15 +6,12 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:49:16 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/07 13:47:02 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/13 16:43:46 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
 # include <limits.h>
 # include <stdlib.h>
 # include <fcntl.h>

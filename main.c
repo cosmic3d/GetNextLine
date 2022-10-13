@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 12:29:57 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/07 14:20:52 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/13 16:57:45 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int main()
 	// // char *line;
 
 
-	fd = open("texto3", O_RDONLY);
+	fd = open("texto", O_RDONLY);
 	if (!fd)
 	{
 		printf("The file could not be opened\nFinishing program\n");

@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:48:46 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/10 14:34:56 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/13 16:52:51 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,11 +118,10 @@ char	*get_next_line(int fd)
 {
 	static t_shit	things;
 	
-	freethings(&things, 0, 0, 1, 0);
-	//things.line = NULL;
+	//freethings(&things, 0, 0, 1, 0);
+	things.line = NULL;
 	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
 		return (freethings(&things, 1, 1, 1, 1));
-	//printf("Index is: %i\n", things.index);
 	if (things.buffer == NULL)
 	{
 		if (allocate(&things, fd) == NULL)
