@@ -6,145 +6,121 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:48:46 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/13 16:52:51 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/13 22:57:35 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+char	*freethings(t_shit *things, int buffer, int joinlater, int line, int s)
+{
+	if (buffer == 1 && things->buffer)
+	{
+		free(things->buffer);
+		things->buffer = NULL;
+		//printf("\nBuffer freed: %s\n", things->buffer);
+	}
+	if (joinlater == 1 && things->joinlater)
+	{
+		free(things->joinlater);
+		things->joinlater = NULL;
+		//printf("Joinlater freed\n");
+	}
+	if (line == 1)
+	{
+		//free(things->line);
+		things->line = NULL;
+		//printf("Line freed\n");
+	}
+	if (s == 1 && things)
+	{
+		things = NULL;
+		//printf("Struct null\n");
+	}
+	return (NULL);
+}
+
 int	read_buffer(t_shit *things, int fd)
 {
 	things->bytes = read(fd, things->buffer, BUFFER_SIZE);
-	if (things->bytes < 0)
+	if (things->bytes == -1)
+	{
+		free(things->buffer);
 		return(-1);
+	}
 	//printf("Bytes read are: %i\n", things->bytes);
 	things->buffer[things->bytes] = '\0';
 	return (0);
 }
 
-int	whatdoido(t_shit *things, int i , int j, int what)
+char	*assert_line(t_shit *things, int fd)
 {
-	/*
-	If it finds a \n
-		If there is a \0 next to the \n
-			We set the index to i + j + 1 and return previndex to index
-		If there is something different to a \0 next to the \n
-			We set the index to i + j + 1, save everything from index to ft_strlen(buffer) and return previndex to index
-	If it finds a \0 there are two possibilities:
-		1 - The buffer size was greater or equal than the size of the file, so we just have to return that line and end the program
-		2 - The buffer size was lower than the size of the file, so we have to keep joining strings till we find a \n
-	*/
-	char	*copy;
-	int		ii;
+	char	*tmp;
 
-	if (what == 0)
-	{
-		if (things->buffer[i + j] == '\n')
-		{
-			if (things->buffer[i + j + 1] == '\0')
-				return (0);
-			return (1);
-		}
-		return (2);
-	}
-	ii = ft_strlen(things->buffer);
-	copy = malloc(sizeof(char) * (ft_strlen(things->buffer) + 1));
-	if (copy == NULL)
-		return (-1);
-	while (ii >= 0)
-	{
-		copy[ii] = things->buffer[ii];
-		ii--;
-	}
-	things->tmp = copy;
-	return (0);
-}
-
-char	*allocate(t_shit *things, int fd)
-{
-	things->buffer = NULL;
-	//free(things->buffer);
 	things->buffer = (char *)malloc((ssize_t)BUFFER_SIZE + 1);
-	if (things->buffer == NULL)
-		return(NULL);
-	if (read_buffer(things, fd) == -1)
+	if (!things->buffer)
 		return (NULL);
+	if (read_buffer(things, fd) == -1)
+		return (freethings(things, 1, 1, 0, 1));
 	things->index = 0;
 	if (things->joinlater)
 	{
 		things->buffer = ft_strjoin(things->joinlater, things->buffer);
-		//free(things->joinlater);
-		things->joinlater = NULL;
+		freethings(things, 0, 1, 0, 0);
 	}
 	while (!ft_strrchr(things->buffer, '\n', 0) && things->bytes != 0)
 	{
-		if (whatdoido(things, 0, 0, 1) == -1 || read_buffer(things, fd) == -1)
-			return (NULL);
-		things->buffer = ft_strjoin(things->tmp, things->buffer);
-		if (things->tmp)
-			free(things->tmp);
-		if (!things->buffer)
-			return (freethings(things, 1, 1, 1, 1));
+		tmp = ft_strdup(things->buffer);
+		if (read_buffer(things, fd) == -1)
+			return (freethings(things, 1, 1, 0, 1));
+		things->buffer = ft_strjoin(tmp, things->buffer);
 	}
+	printf("\nBuffer is: %s\n", things->buffer);
 	return("1");
 }
 
 char	*read_line(t_shit *things)
 {
 	int i;
-	int j;
-	int previndex;
+	int prev;
 	i = 0;
-	j = things->index;
-	previndex = j;
-	while(things->buffer[i + j] != '\0' && things->buffer[i + j] != '\n')//Buscamos salto de línea o \0
+	prev = things->index;
+	while(things->buffer[i + prev] != '\0' && things->buffer[i + prev] != '\n')//Buscamos salto de línea o \0
 		i++;
-	if (whatdoido(things, i, j, 0) != 2)//Si da distinto de dos, hay un salto de línea
+	if (things->buffer[i + prev] == '\n')
 	{
-		things->index = i + j + 1;
-		if (whatdoido(things, i, j, 0) == 1 && !ft_strrchr(things->buffer, '\n', things->index))
+		things->index = i + prev + 1;
+		if (things->buffer[i + prev + 1] == '\0' && !ft_strrchr(things->buffer, '\n', things->index))
 			things->joinlater = ft_substr(things->buffer, things->index, ft_strlen(things->buffer));
 		if (things->joinlater)
-			return (ft_substr(things->buffer, previndex, things->index - previndex));
-		return (ft_substr(things->buffer, previndex, things->index - previndex));
+			return (ft_substr(things->buffer, prev, things->index - prev));
+		return (ft_substr(things->buffer, prev, things->index - prev));
 	}
-	things->index = i + j;
+	things->index = i + prev;
 	if (things->joinlater == NULL)
-		things->joinlater = ft_substr(things->buffer, previndex, i + j + 1);
+		things->joinlater = ft_substr(things->buffer, prev, i + prev + 1);
 	return (NULL);
 }
 
 char	*get_next_line(int fd)
 {
 	static t_shit	things;
-	
-	//freethings(&things, 0, 0, 1, 0);
+	char			*line;
+
 	things.line = NULL;
 	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
 		return (freethings(&things, 1, 1, 1, 1));
 	if (things.buffer == NULL)
 	{
-		if (allocate(&things, fd) == NULL)
-			return (freethings(&things, 1, 1, 1, 1));
+		things.buffer = ft_strdup("");
+		if (!assert_line(&things, fd))
+			return (NULL);
 	}
-	else if (things.buffer[things.index] == '\0')
-		if (allocate(&things, fd) == NULL)
-			return (freethings(&things, 1, 1, 1, 1));
-	while (things.line == NULL)
-	{
-		if (things.bytes == 0)
-		{
-			if (!(things.buffer[things.index] != '\0'))
-				return (freethings(&things, 1, 1, 1, 1));
-			whatdoido(&things, 0, 0, 1);
-			things.line = things.tmp;
-			things.buffer = NULL;
-			return (things.line);
-		}
-		things.line = read_line(&things);
-		if (things.joinlater != NULL)
-			if (things.buffer[things.index] == '\0' && !allocate(&things, fd))
-				return (freethings(&things, 1, 1, 1, 1));
-	}
-	return (things.line);
+	line = read_line(&things);
+	if (!line)
+		return (freethings(&things, 1, 1, 0, 1));
+	if (things.joinlater)
+		free(things.buffer);
+	printf("\nJoinlater is: %s\n", things.joinlater);
+	return (line);
 }

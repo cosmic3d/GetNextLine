@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 15:48:49 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/13 16:57:20 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/13 22:40:27 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,21 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		i;
 	int		j;
 
-	i = 0;
+	i = -1;
 	j = 0;
 	new = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!new)
 		return (NULL);
-	while (s1[i] != '\0')
-	{
+	while (s1[++i] != '\0')
 		new[i] = s1[i];
-		i++;
-	}
 	while (s2[j] != '\0')
 	{
 		new[i] = s2[j];
 		j++;
 		i++;
 	}
+	free((void *)s1);
+	free((void *)s2);
 	new[i] = '\0';
 	return (new);
 }
@@ -87,30 +86,22 @@ char	*ft_strrchr(const char *s, int c, int index)
 	return (NULL);
 }
 
-char	*freethings(t_shit *things, int buffer, int joinlater, int line, int s)
+char    *ft_strdup(const char *s1)
 {
-	if (buffer == 1 && things->buffer)
-	{
-		free(things->buffer);
-		things->buffer = NULL;
-		printf("\nBuffer freed\n");
-	}
-	if (joinlater == 1 && things->joinlater)
-	{
-		//free(things->joinlater);
-		things->joinlater = NULL;
-		printf("Joinlater freed\n");
-	}
-	if (line == 1 && things->line)
-	{
-		//free(things->line);
-		things->line = NULL;
-		printf("Line freed\n");
-	}
-	if (s == 1 && things)
-	{
-		things = NULL;
-		printf("Struct null\n");
-	}
-	return (NULL);
+        char	*copy;
+        int		i;
+
+		i = ft_strlen(s1);
+    	copy = malloc(sizeof(char) * (ft_strlen(s1) + 1));
+        if (copy == 0)
+        {
+            errno = ENOMEM;
+            return (NULL);
+        }
+        while (i >= 0)
+        {
+            copy[i] = s1[i];
+            i--;
+        }
+        return (copy);
 }
