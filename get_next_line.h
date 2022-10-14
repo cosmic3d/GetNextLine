@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:49:16 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/13 16:43:46 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/14 19:58:28 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,9 @@ typedef struct s_shit
 	int		index;
 	char	*buffer;
 	char	*joinlater;
-	char	*line;
-	char	*tmp;
 	int		bytes;
+	int		memoryAllocated;
 }	t_shit;
 
-char	*freethings(t_shit *things, int buffer, int joinlater, int line, int s);
+char	*freethings(t_shit *things, int buffer, int s);
 #endif
