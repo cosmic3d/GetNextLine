@@ -6,67 +6,40 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:48:46 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/14 21:13:36 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/19 14:28:12 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*freethings(t_shit *things, int buffer, int s)
-{
-	if (buffer == 1)
-	{
-		free(things->buffer);
-		things->buffer = NULL;
-		//printf("\nBuffer freed: %s\n", things->buffer);
-	}
-	if (s == 1)
-	{
-		things = NULL;
-		//printf("Struct null\n");
-	}
-	return (NULL);
-}
 
-int	read_buffer(t_shit *things, int fd)
-{
-	things->bytes = read(fd, things->buffer, BUFFER_SIZE);
-	if (things->bytes == -1)
-	{
-		write(1, "An error occurred\n", 19);
-		return(NULL);
-	}
-	printf("Bytes read are: %i\n", things->bytes);
-	things->buffer[things->bytes] = '\0';
-	return (1);
-}
 
-char	*assert_line(t_shit *things, int fd)
+char	*assert_line(char *buffer, int fd)
 {
 	char	*tmp;
-	
-	things->buffer = (char *)malloc((ssize_t)BUFFER_SIZE + 1);
-	things->index = 0;
-	if (!read_buffer(things, fd))
+	int		bytes;
+
+	tmp = (char *)malloc((ssize_t)BUFFER_SIZE + 1);
+	if (!buffer)
 		return (NULL);
-	buff = read_buffer(things, fd, buff);
-	if (!buff)
-		return (freethings(things, 1, 1));
-	things->index = 0;
-	if (things->joinlater)
-		buff = ft_strjoin(things->joinlater, buff);
-	while (!ft_strrchr(buff, '\n', 0) && things->bytes != 0)
+	buffer[bytes] = '\0';
+	while (!ft_strrchr(buffer, '\n', 0) && things->bytes != 0)
 	{
-		tmp = ft_strdup(buff);
-		buff = read_buffer(things, fd, buff);
-		if (!buff)
-			return (freethings(things, 1, 1));
-		buff = ft_strjoin(tmp, buff);
+		bytes = read(fd, tmp, BUFFER_SIZE);
+		if (bytes == -1)
+		{
+			free(buffer);
+			free(tmp); 
+			return (NULL);
+		}
+		tmp[bytes] = '\0';
+		buffer = ft_strjoin(buffer, tmp);
 	}
-	return("1");
+	free(tmp);
+	return(buffer);
 }
 
-char	*read_line(t_shit *things)
+char	*read_line(char	*buffer)
 {
 	int i;
 	int prev;
@@ -88,23 +61,33 @@ char	*read_line(t_shit *things)
 	return (NULL);
 }
 
+char	*get_rest(char *buffer)
+{
+	
+}
+
 char	*get_next_line(int fd)
 {
-	static t_shit	things;
+	static	char	*buffer;
 	char			*line;
 
 	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
-		return (freethings(&things, 1, 1));
-	if (things.buffer == NULL)
+		return (NULL);
+	if (buffer == NULL)
 	{
-		if (!assert_line(&things, fd))
+		buffer = ft_strdup("");
+		if (!buffer)
 			return (NULL);
 	}
-	line = read_line(&things);
+	buffer = assert_line(buffer, fd);
+	if (!buffer)
+		return (NULL);
+	line = read_line(buffer);
 	if (!line)
-		return (freethings(&things, 1, 1));
-	if (things.joinlater)
-		freethings(&things, 1, 0);
-	printf("\nJoinlater is: %s\n", things.joinlater);
+		return (NULL);
+	if (!ft_strrchr(buffer, '\n', 0))
+	{
+		buffer = 
+	}
 	return (line);
 }

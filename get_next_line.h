@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:49:16 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/14 19:58:28 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/19 12:08:05 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,4 @@ int		ft_strlen(const char *str);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strrchr(const char *s, int c, int index);
 char	*ft_strdup(const char *s1);
-
-typedef struct s_shit
-{
-	int		index;
-	char	*buffer;
-	char	*joinlater;
-	int		bytes;
-	int		memoryAllocated;
-}	t_shit;
-
-char	*freethings(t_shit *things, int buffer, int s);
 #endif

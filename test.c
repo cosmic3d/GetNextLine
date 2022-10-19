@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include <stdio.h>
 
 void print_bits(unsigned char octet)
 {
@@ -15,6 +16,12 @@ void print_bits(unsigned char octet)
 
 int main(void)
 {
-    print_bits(' ');
+	char	*hola = "hola";
+
+	printf("Index 0 is: %c", hola[0]);
+	hola++;
+	hola++;
+	printf("Index 0 is: %c", hola[0]);
+    //print_bits(' ');
     return (0);
 }
