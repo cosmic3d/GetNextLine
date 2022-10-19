@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:48:46 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/19 14:28:12 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/19 15:43:12 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@ char	*assert_line(char *buffer, int fd)
 	int		bytes;
 
 	tmp = (char *)malloc((ssize_t)BUFFER_SIZE + 1);
-	if (!buffer)
+	if (!tmp)
 		return (NULL);
-	buffer[bytes] = '\0';
-	while (!ft_strrchr(buffer, '\n', 0) && things->bytes != 0)
+	while (!ft_strrchr(buffer, '\n', 0) && bytes != 0)
 	{
 		bytes = read(fd, tmp, BUFFER_SIZE);
 		if (bytes == -1)
@@ -41,30 +40,37 @@ char	*assert_line(char *buffer, int fd)
 
 char	*read_line(char	*buffer)
 {
-	int i;
-	int prev;
+	int		i;
+	char	*line;
+	
 	i = 0;
-	prev = things->index;
-	while(things->buffer[i + prev] != '\0' && things->buffer[i + prev] != '\n')//Buscamos salto de línea o \0
+	while(buffer[i] != '\0' && buffer[i] != '\n')//Buscamos salto de línea o \0
 		i++;
-	if (things->buffer[i + prev] == '\n')
+	if (buffer[i] == '\n')
 	{
-		things->index = i + prev + 1;
-		printf("\nChar at index now is: %i\n", things->buffer[things->index]);
-		if (things->buffer[i + prev + 1] != '\0' && !ft_strrchr(things->buffer, '\n', things->index))
-			things->joinlater = ft_substr(things->buffer, things->index, ft_strlen(things->buffer));
-		return (ft_substr(things->buffer, prev, things->index - prev));
+		line = ft_substr(buffer, 0, i);
+		if (!line)
+		{
+			free(buffer);
+			return (NULL);
+		}
+		while(*buffer != '\n')
+			buffer++;
+		buffer++;
+		return (line);
 	}
-	things->index = i + prev;
-	if (things->joinlater == NULL)
-		things->joinlater = ft_substr(things->buffer, prev, i + prev + 1);
-	return (NULL);
+	return (buffer);
 }
 
-char	*get_rest(char *buffer)
-{
-	
-}
+// char	*get_rest(char *buffer)
+// {
+// 	char	*rest;
+
+// 	if (*buffer != '\0' && !ft_strrchr(buffer, '\n', 0))
+// 	{
+// 		rest = ft_substr(buffer)
+// 	}
+// }
 
 char	*get_next_line(int fd)
 {
@@ -85,9 +91,11 @@ char	*get_next_line(int fd)
 	line = read_line(buffer);
 	if (!line)
 		return (NULL);
-	if (!ft_strrchr(buffer, '\n', 0))
-	{
-		buffer = 
-	}
+	// if (!ft_strrchr(buffer, '\n', 0))
+	// {
+	// 	buffer = get_rest(buffer);
+	// 	if (!buffer)
+	// 		return (NULL);
+	// }
 	return (line);
 }
