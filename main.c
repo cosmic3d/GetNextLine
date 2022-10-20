@@ -15,7 +15,7 @@
 int main()
 {
 	int fd;
-	// char str[BUFFER_SIZE];
+	char *str;
 	// // char *line;
 
 
@@ -29,6 +29,11 @@ int main()
 
 	i = 0;
 	while (i++ <= 8)
-		printf("LINE %i IS: %s",i, get_next_line(fd));
+	{
+		str = get_next_line(fd);
+		printf("LINE %i IS: %s",i, str);
+		free(str);
+		str = NULL;
+	}
 	return (0);
 }

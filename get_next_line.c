@@ -44,22 +44,20 @@ char	*read_line(char	*buffer)
 	char	*line;
 	
 	i = 0;
+	//printf("Buffer is: %s\n", buffer);
 	while(buffer[i] != '\0' && buffer[i] != '\n')//Buscamos salto de línea o \0
 		i++;
-	if (buffer[i] == '\n')
+	//printf("I is: %i", i);
+	line = ft_substr(buffer, 0, i + 1);
+	//printf("La linea es: %s", line);
+	if (!line)
 	{
-		line = ft_substr(buffer, 0, i);
-		if (!line)
-		{
-			free(buffer);
-			return (NULL);
-		}
-		while(*buffer != '\n')
-			buffer++;
-		buffer++;
-		return (line);
+		free(buffer);
+		return (NULL);
 	}
-	return (buffer);
+	//printf("Buffer is: %s\n", buffer);
+	//printf("Index is: %c\n", buffer[0]);
+	return (line);
 }
 
 // char	*get_rest(char *buffer)
@@ -77,8 +75,9 @@ char	*get_next_line(int fd)
 	static	char	*buffer;
 	char			*line;
 
-	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd > 255  || BUFFER_SIZE <= 0)
 		return (NULL);
+	line = NULL;
 	if (buffer == NULL)
 	{
 		buffer = ft_strdup("");
@@ -90,6 +89,11 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line = read_line(buffer);
 	if (!line)
+		return (NULL);
+	while(*buffer != '\n' && *buffer != '\0')
+                buffer++;
+        buffer++;
+	if (*line == '\0')
 		return (NULL);
 	// if (!ft_strrchr(buffer, '\n', 0))
 	// {
