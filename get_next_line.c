@@ -6,13 +6,38 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:48:46 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/19 15:43:12 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/21 22:25:12 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+char	*freeshit(char **buffer)
+{
+	if (buffer != NULL)
+	{
+		if (*buffer)
+			free(*buffer);
+		buffer = NULL;
+	}
+	return (NULL);
+}
 
+char	*erase_line(char *buffer)
+{
+	char	*new;
+	int		i;
+
+	i = 0;
+	while (buffer[i] != '\n' && buffer[i] != '\0')
+		i++;
+	new = ft_substr(buffer, i + 1, ft_strlen(buffer) - i + 1);
+	if (!new)
+		return (NULL);
+	freeshit(&buffer, NULL);
+	return (new);
+
+}
 
 char	*assert_line(char *buffer, int fd)
 {
@@ -26,11 +51,7 @@ char	*assert_line(char *buffer, int fd)
 	{
 		bytes = read(fd, tmp, BUFFER_SIZE);
 		if (bytes == -1)
-		{
-			free(buffer);
-			free(tmp); 
-			return (NULL);
-		}
+			return (freeshit(&buffer, &tmp));
 		tmp[bytes] = '\0';
 		buffer = ft_strjoin(buffer, tmp);
 	}
@@ -44,40 +65,21 @@ char	*read_line(char	*buffer)
 	char	*line;
 	
 	i = 0;
-	//printf("Buffer is: %s\n", buffer);
 	while(buffer[i] != '\0' && buffer[i] != '\n')//Buscamos salto de línea o \0
 		i++;
-	//printf("I is: %i", i);
 	line = ft_substr(buffer, 0, i + 1);
-	//printf("La linea es: %s", line);
 	if (!line)
-	{
-		free(buffer);
 		return (NULL);
-	}
-	//printf("Buffer is: %s\n", buffer);
-	//printf("Index is: %c\n", buffer[0]);
 	return (line);
 }
-
-// char	*get_rest(char *buffer)
-// {
-// 	char	*rest;
-
-// 	if (*buffer != '\0' && !ft_strrchr(buffer, '\n', 0))
-// 	{
-// 		rest = ft_substr(buffer)
-// 	}
-// }
 
 char	*get_next_line(int fd)
 {
 	static	char	*buffer;
 	char			*line;
 
-	if (fd < 0 || fd > 255  || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
-	line = NULL;
 	if (buffer == NULL)
 	{
 		buffer = ft_strdup("");
@@ -89,17 +91,11 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line = read_line(buffer);
 	if (!line)
-		return (NULL);
-	while(*buffer != '\n' && *buffer != '\0')
-                buffer++;
-        buffer++;
+		return (freeshit(&buffer, NULL));
 	if (*line == '\0')
-		return (NULL);
-	// if (!ft_strrchr(buffer, '\n', 0))
-	// {
-	// 	buffer = get_rest(buffer);
-	// 	if (!buffer)
-	// 		return (NULL);
-	// }
+		return (freeshit(&buffer, &line));
+	buffer = erase_line(buffer);
+	if (!buffer)
+		return (freeshit(&line, NULL));
 	return (line);
 }

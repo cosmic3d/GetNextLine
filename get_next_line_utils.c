@@ -6,13 +6,13 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 15:48:49 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/14 21:03:41 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/20 13:04:10 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*new;
 	int		i;
@@ -32,6 +32,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		i++;
 	}
 	new[i] = '\0';
+	s1 = NULL;
 	return (new);
 }
 
@@ -75,11 +76,14 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 char	*ft_strrchr(const char *s, int c, int index)
 {
-	while (s[index] != '\0')
+	if (s)
 	{
-		if (s[index] == (char)c)
-			return ((char *)(s + index));
-		index++;
+		while (s[index] != '\0')
+		{
+			if (s[index] == (char)c)
+				return ((char *)(s + index));
+			index++;
+		}
 	}
 	return (NULL);
 }

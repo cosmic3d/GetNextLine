@@ -4,6 +4,7 @@
         "errno.h": "c",
         "unistd.h": "c",
         "chrono": "c",
-        "iterator": "c"
+        "iterator": "c",
+        "limits.h": "c"
     }
 }

@@ -1,27 +1,43 @@
 #include <unistd.h>
-#include <stdio.h>
 
-void print_bits(unsigned char octet)
+void  ft_simple(char *input)
 {
-	int	i;
-	unsigned char bit;
+    char    *output;
+    input = "modificado";
+    return ;
+}
 
-	i = 8;
-	while (i--)
-	{
-		bit = (octet >> i & 1) + '0';
-		write(1, &bit, 1);
-	}
+void  ft_doble(char **input2)
+{
+    
+    char    *output4 = "123456";
+
+    *input2 = output4;
+       
+    return ;
+}
+
+void ft_editcontent(int *number)
+{
+  int b = 42;
+  
+  *number = 0;
+  number = &b;
+  *number = 11111;
+  return ;
 }
 
 int main(void)
 {
-	char	*hola = "hola";
+    char *str;
+    int a = 9999999;
 
-	printf("Index 0 is: %c", hola[0]);
-	hola++;
-	hola++;
-	printf("Index 0 is: %c", hola[0]);
-    //print_bits(' ');
+    str = "HOLA";
+    ft_editcontent(&a);
+    ft_simple(str);
+    ft_doble(&str);
+    
+   
+
     return (0);
 }
