@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/14 14:48:46 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/23 21:14:39 by jenavarr         ###   ########.fr       */
+/*   Created: 2022/10/23 21:31:18 by jenavarr          #+#    #+#             */
+/*   Updated: 2022/10/23 21:35:07 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,21 +98,21 @@ char	*read_line(char	*buffer)
 
 char	*get_next_line(int fd)
 {
-	static	char	*buffer;
+	static	char	*buffer[OPEN_MAX];
 	char			*line;
 
 	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (buffer == NULL)
+	if (buffer[fd] == NULL)
 	{
-		buffer = ft_strdup("");
-		if (!buffer)
+		buffer[fd] = ft_strdup("");
+		if (!buffer[fd])
 			return (NULL);
 	}
-	buffer = assert_line(buffer, fd);
-	if (!buffer)
-		return (freeshit(&buffer));
-	line = read_line(buffer);
-	buffer = erase_line(buffer);
+	buffer[fd] = assert_line(buffer[fd], fd);
+	if (!buffer[fd])
+		return (freeshit(&buffer[fd]));
+	line = read_line(buffer[fd]);
+	buffer[fd] = erase_line(buffer[fd]);
 	return (line);
 }
