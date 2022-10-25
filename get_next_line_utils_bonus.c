@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/23 21:30:45 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/23 21:30:50 by jenavarr         ###   ########.fr       */
+/*   Created: 2022/10/23 21:30:06 by jenavarr          #+#    #+#             */
+/*   Updated: 2022/10/23 21:30:30 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,22 +75,22 @@ char	*ft_strrchr(const char *s, int c, int index)
 	return (NULL);
 }
 
-char    *ft_strdup(const char *s1)
+char	*ft_strdup(const char *s1)
 {
-        char	*copy;
-        int		i;
+	char	*copy
+		int		i;
 
-		i = ft_strlen(s1);
-    	copy = malloc(sizeof(char) * (ft_strlen(s1) + 1));
-        if (copy == 0)
-        {
-            errno = ENOMEM;
-            return (NULL);
-        }
-        while (i >= 0)
-        {
-            copy[i] = s1[i];
-            i--;
-        }
-        return (copy);
+	i = ft_strlen(s1);
+	copy = malloc(sizeof(char) * (ft_strlen(s1) + 1));
+	if (copy == 0)
+	{
+		errno = ENOMEM;
+		return (NULL);
+	}
+	while (i >= 0)
+	{
+		copy[i] = s1[i];
+		i--;
+	}
+	return (copy);
 }

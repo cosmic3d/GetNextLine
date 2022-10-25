@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/23 21:31:18 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/23 21:35:07 by jenavarr         ###   ########.fr       */
+/*   Created: 2022/09/14 14:48:46 by jenavarr          #+#    #+#             */
+/*   Updated: 2022/10/23 21:14:39 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,18 +65,18 @@ char	*assert_line(char *buffer, int fd)
 		buffer = ft_strjoin(buffer, tmp);
 	}
 	freeshit(&tmp);
-	return(buffer);
+	return (buffer);
 }
 
 char	*read_line(char	*buffer)
 {
 	int		i;
 	char	*line;
-	
+
 	i = 0;
 	if (!buffer[i])
 		return (NULL);
-	while(buffer[i] != '\0' && buffer[i] != '\n')//Buscamos salto de línea o \0
+	while (buffer[i] != '\0' && buffer[i] != '\n')
 		i++;
 	if (buffer[i] == '\0')
 		line = (char *)malloc(sizeof(char) * (i + 1));
@@ -98,7 +98,7 @@ char	*read_line(char	*buffer)
 
 char	*get_next_line(int fd)
 {
-	static	char	*buffer[OPEN_MAX];
+	static char		*buffer[OPEN_MAX];
 	char			*line;
 
 	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)

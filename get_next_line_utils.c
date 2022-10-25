@@ -75,22 +75,22 @@ char	*ft_strrchr(const char *s, int c, int index)
 	return (NULL);
 }
 
-char    *ft_strdup(const char *s1)
+char	*ft_strdup(const char *s1)
 {
-        char	*copy;
-        int		i;
+	char	*copy
+		int		i;
 
-		i = ft_strlen(s1);
-    	copy = malloc(sizeof(char) * (ft_strlen(s1) + 1));
-        if (copy == 0)
-        {
-            errno = ENOMEM;
-            return (NULL);
-        }
-        while (i >= 0)
-        {
-            copy[i] = s1[i];
-            i--;
-        }
-        return (copy);
+	i = ft_strlen(s1);
+	copy = malloc(sizeof(char) * (ft_strlen(s1) + 1));
+	if (copy == 0)
+	{
+		errno = ENOMEM;
+		return (NULL);
+	}
+	while (i >= 0)
+	{
+		copy[i] = s1[i];
+		i--;
+	}
+	return (copy);
 }
