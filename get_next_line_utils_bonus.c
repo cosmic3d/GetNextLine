@@ -6,11 +6,11 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 21:30:06 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/27 22:43:00 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/28 14:23:37 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_strjoin(char *s1, char *s2)
 {

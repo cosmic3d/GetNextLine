@@ -6,11 +6,11 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:48:46 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/27 22:48:11 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/28 14:23:21 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*freeshit(char **buffer)
 {
