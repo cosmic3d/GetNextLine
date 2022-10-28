@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 21:30:06 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/23 21:30:30 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/27 22:43:00 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ char	*ft_strrchr(const char *s, int c, int index)
 
 char	*ft_strdup(const char *s1)
 {
-	char	*copy
-		int		i;
+	char	*copy;
+	int		i;
 
 	i = ft_strlen(s1);
 	copy = malloc(sizeof(char) * (ft_strlen(s1) + 1));
