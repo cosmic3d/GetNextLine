@@ -14,12 +14,16 @@
 # define GET_NEXT_LINE_H
 # include <limits.h>
 # include <stdlib.h>
-# include <fcntl.h>
-# include <stdio.h>
 # include <unistd.h>
-# include <errno.h>
 
+//GET_NEXT_LINE
 char	*get_next_line(int fd);
+//MAIN FUNCTIONS
+char	*freeshit(char **buffer);
+char	*assert_line(char *buffer, int fd);
+char	*erase_line(char *buffer);
+char	*read_line(char	*buffer);
+//UTILS FUNCTIONS
 char	*ft_strjoin(char *s1, char *s2);
 int		ft_strlen(const char *str);
 void	*ft_calloc(size_t size);

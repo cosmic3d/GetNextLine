@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 21:30:06 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/28 14:23:37 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/28 15:06:29 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	i = -1;
 	j = 0;
-	new = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (!new)
-		return (NULL);
+	new = (void *)ft_calloc((size_t)(ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (new == NULL)
+		return (freeshit(&s1));
 	while (s1[++i] != '\0')
 		new[i] = s1[i];
 	while (s2[j] != '\0')
@@ -31,9 +31,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		j++;
 		i++;
 	}
-	new[i] = '\0';
-	free(s1);
-	s1 = NULL;
+	freeshit(&s1);
 	return (new);
 }
 
@@ -42,6 +40,8 @@ int	ft_strlen(const char *str)
 	int	length;
 
 	length = 0;
+	if (!str)
+		return (0);
 	while (str[length])
 		length++;
 	return (length);
@@ -83,10 +83,7 @@ char	*ft_strdup(const char *s1)
 	i = ft_strlen(s1);
 	copy = malloc(sizeof(char) * (ft_strlen(s1) + 1));
 	if (copy == 0)
-	{
-		errno = ENOMEM;
 		return (NULL);
-	}
 	while (i >= 0)
 	{
 		copy[i] = s1[i];

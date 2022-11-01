@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 14:48:46 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/23 21:14:39 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/28 15:10:46 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ char	*freeshit(char **buffer)
 {
 	free(*buffer);
 	*buffer = NULL;
-	buffer = NULL;
 	return (NULL);
 }
 
@@ -36,7 +35,7 @@ char	*erase_line(char *buffer)
 	c = 0;
 	new = ft_calloc(ft_strlen(buffer) - i + 1);
 	if (!new)
-		return (NULL);
+		return (freeshit(&buffer));
 	i++;
 	c = 0;
 	while (buffer[i])
@@ -53,6 +52,7 @@ char	*assert_line(char *buffer, int fd)
 	tmp = (char *)malloc((ssize_t)BUFFER_SIZE + 1);
 	if (tmp == NULL)
 		return (freeshit(&buffer));
+	bytes = 1;
 	while (!ft_strrchr(buffer, '\n', 0) && bytes != 0)
 	{
 		bytes = read(fd, tmp, BUFFER_SIZE);
@@ -63,6 +63,8 @@ char	*assert_line(char *buffer, int fd)
 		}
 		tmp[bytes] = '\0';
 		buffer = ft_strjoin(buffer, tmp);
+		if (!buffer)
+			return (freeshit(&tmp));
 	}
 	freeshit(&tmp);
 	return (buffer);
@@ -78,10 +80,9 @@ char	*read_line(char	*buffer)
 		return (NULL);
 	while (buffer[i] != '\0' && buffer[i] != '\n')
 		i++;
-	if (buffer[i] == '\0')
-		line = (char *)malloc(sizeof(char) * (i + 1));
-	else
-		line = (char *)malloc(sizeof(char) * (i + 2));
+	if (buffer[i] == '\n')
+		i++;
+	line = (char *)malloc(sizeof(char) * (i + 1));
 	if (!line)
 		return (NULL);
 	i = -1;
@@ -98,21 +99,25 @@ char	*read_line(char	*buffer)
 
 char	*get_next_line(int fd)
 {
-	static char		*buffer;
+	static char		*buffer[OPEN_MAX];
 	char			*line;
 
 	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (buffer == NULL)
+	if (!buffer[fd])
 	{
-		buffer = ft_strdup("");
-		if (!buffer)
+		buffer[fd] = ft_calloc(1);
+		if (!buffer[fd])
 			return (NULL);
 	}
-	buffer = assert_line(buffer, fd);
-	if (!buffer)
-		return (freeshit(&buffer));
-	line = read_line(buffer);
-	buffer = erase_line(buffer);
+	buffer[fd] = assert_line(buffer[fd], fd);
+	if (!buffer[fd])
+		return (freeshit(&buffer[fd]));
+	line = read_line(buffer[fd]);
+	if (!line)
+		return (freeshit(&buffer[fd]));
+	buffer[fd] = erase_line(buffer[fd]);
+	if (!buffer[fd])
+		freeshit(&buffer[fd]);
 	return (line);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:24:24 by jenavarr          #+#    #+#             */
-/*   Updated: 2022/10/28 14:24:36 by jenavarr         ###   ########.fr       */
+/*   Updated: 2022/10/28 14:44:23 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,16 @@
 # define GET_NEXT_LINE_BONUS_H
 # include <limits.h>
 # include <stdlib.h>
-# include <fcntl.h>
-# include <stdio.h>
 # include <unistd.h>
-# include <errno.h>
 
+//GET_NEXT_LINE
 char	*get_next_line(int fd);
+//MAIN FUNCTIONS
+char	*freeshit(char **buffer);
+char	*assert_line(char *buffer, int fd);
+char	*erase_line(char *buffer);
+char	*read_line(char	*buffer);
+//UTILS FUNCTIONS
 char	*ft_strjoin(char *s1, char *s2);
 int		ft_strlen(const char *str);
 void	*ft_calloc(size_t size);
